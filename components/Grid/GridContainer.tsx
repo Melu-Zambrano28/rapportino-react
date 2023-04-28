@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { getAllDates } from '../../utils/utils'
+import { getAllDates, getWorkingDaysByAutocompilation } from '../../utils/utils'
 import { Grid } from './Grid'
 import { Day } from '../GridItem/GridITem'
+import styles from './Grid.module.scss'
 
 const GridContainer: React.FunctionComponent<{}> = () => {
   const current_date = new Date()
@@ -11,24 +12,11 @@ const GridContainer: React.FunctionComponent<{}> = () => {
     current_date.getMonth(),
   )
 
-  const getWorkingDaysByAutocompilation = (autoCompilation: boolean) => {
-    return allDates.map((_) => {
-      const day = _.getDay() + 1
-      const isWeekEnd = day === 1 || day === 7
-      return {
-        day: current_date.getDate() + 1,
-        weekDay: _.toLocaleString('it-IT', {
-          weekday: 'long',
-          day: '2-digit',
-        }),
-        WorkingHours: autoCompilation && !isWeekEnd ? 8 : 0,
-        isWeekend: autoCompilation && isWeekEnd,
-      }
-    })
-  }
-
-  const initiaState: Day[] = getWorkingDaysByAutocompilation(false)
-  const stateWithAutocompilation: Day[] = getWorkingDaysByAutocompilation(true)
+  const initiaState: Day[] = getWorkingDaysByAutocompilation(allDates, false)
+  const stateWithAutocompilation: Day[] = getWorkingDaysByAutocompilation(
+    allDates,
+    true,
+  )
   const [giorni, setGiorni] = useState<Day[]>(initiaState)
   const [isAutoCompilation, setIsAutoCompilation] = useState(false)
 
@@ -41,13 +29,20 @@ const GridContainer: React.FunctionComponent<{}> = () => {
   }, [isAutoCompilation])
 
   return (
-    <Grid
-      month={current_date.toLocaleDateString('it-IT', {
-        month: 'long',
-      })}
-      days={giorni}
-      setAutoCompilation={setIsAutoCompilation}
-    />
+    <div>
+      <Grid
+        month={current_date.toLocaleDateString('it-IT', {
+          month: 'long',
+        })}
+        days={giorni}
+        setAutoCompilation={setIsAutoCompilation}
+      />
+      <div className={`${styles.flexColumnEnd}`}>
+        <div>
+          <p>Giorni Lavorati : </p>
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import style from './GridItem.module.scss'
+import styles from './GridItem.module.scss'
 
 export type Day = {
   day: number
@@ -17,12 +17,12 @@ const GridITem: React.FunctionComponent<Day> = ({
   const weekEndClass = isWeekend ? 'isWeekEnd' : ''
   return (
     <div
-      className={`${style['gridItem']} ${
-        weekEndClass ? style[weekEndClass] : ''
+      className={`${styles['gridItem']} ${
+        weekEndClass ? styles[weekEndClass] : ''
       }`}
     >
       <div>{`${weekDay}`}</div>
-      <div className={`${style.nOre}`}>{`${WorkingHours}`}</div>
+      <div className={`${styles.nOre}`}>{`${WorkingHours}`}</div>
     </div>
   )
 }

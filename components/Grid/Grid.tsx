@@ -1,5 +1,5 @@
 import React from 'react'
-import style from './Grid.module.scss'
+import styles from './Grid.module.scss'
 import { GridITem, Day } from '../GridItem/GridITem'
 
 export type Month = {
@@ -21,8 +21,8 @@ const Grid: React.FunctionComponent<Month> = ({
 
   return (
     <div>
-      <div className={style.flexRowBetween}>
-        <h1 className={`${style.title}`}>{month}</h1>
+      <div className={styles.flexRowBetween}>
+        <h1 className={`${styles.title}`}>{month}</h1>
         <div>
           <input
             type="checkbox"
@@ -35,7 +35,7 @@ const Grid: React.FunctionComponent<Month> = ({
           <br />
         </div>
       </div>
-      <div className={style.ggContainer}>
+      <div className={styles.ggContainer}>
         {days.map((_, index) => (
           <GridITem
             key={`GG${index}`}
@@ -45,9 +45,6 @@ const Grid: React.FunctionComponent<Month> = ({
             isWeekend={_.isWeekend}
           />
         ))}
-      </div>
-      <div>
-        <p>Giorni Lavorati : </p>
       </div>
     </div>
   )

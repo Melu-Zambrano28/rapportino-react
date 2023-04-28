@@ -24,4 +24,23 @@ const toCapitalize = (text: string): string => {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-export { getAllDates, toCapitalize }
+const getWorkingDaysByAutocompilation = (
+  allDates: Date[],
+  autoCompilation: boolean,
+) => {
+  return allDates.map((_) => {
+    const day = _.getDay() + 1
+    const isWeekEnd = day === 1 || day === 7
+    return {
+      day: _.getDate() + 1,
+      weekDay: _.toLocaleString('it-IT', {
+        weekday: 'long',
+        day: '2-digit',
+      }),
+      WorkingHours: autoCompilation && !isWeekEnd ? 8 : 0,
+      isWeekend: autoCompilation && isWeekEnd,
+    }
+  })
+}
+
+export { getAllDates, toCapitalize, getWorkingDaysByAutocompilation }
