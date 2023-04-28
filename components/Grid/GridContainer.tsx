@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react'
-import { getAllDates, getWorkingDaysByAutocompilation } from '../../utils/utils'
+import {
+  countWorkedDays,
+  countWorkedHours,
+  getAllDates,
+  getWorkingDaysByAutocompilation,
+} from '../../utils/utils'
 import { Grid } from './Grid'
 import { Day } from '../GridItem/GridITem'
 import styles from './Grid.module.scss'
@@ -19,14 +24,23 @@ const GridContainer: React.FunctionComponent<{}> = () => {
   )
   const [giorni, setGiorni] = useState<Day[]>(initiaState)
   const [isAutoCompilation, setIsAutoCompilation] = useState(false)
+  const [workedDays, setWorkedDays] = useState(0)
+  const [workedHours, setWorkedHours] = useState(0)
 
   useEffect(() => {
     if (isAutoCompilation) {
+      const resultWorkedDays = countWorkedDays(stateWithAutocompilation)
+      const resultWorkedHours = countWorkedHours(stateWithAutocompilation)
+
       setGiorni(stateWithAutocompilation)
+      setWorkedDays(resultWorkedDays)
+      setWorkedHours(resultWorkedHours)
     } else {
       setGiorni(initiaState)
+      setWorkedDays(0)
+      setWorkedHours(0)
     }
-  }, [isAutoCompilation])
+  }, [isAutoCompilation, workedDays])
 
   return (
     <div>
@@ -39,7 +53,8 @@ const GridContainer: React.FunctionComponent<{}> = () => {
       />
       <div className={`${styles.flexColumnEnd}`}>
         <div>
-          <p>Giorni Lavorati : </p>
+          <p>Giorni Lavorati : {workedDays}</p>
+          <p>Ore Lavorate : {workedHours}</p>
         </div>
       </div>
     </div>

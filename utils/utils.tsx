@@ -1,3 +1,5 @@
+import { Day } from '../components/GridItem/GridITem'
+
 export const optionDatesGGMM = {
   weekday: 'long',
   day: '2-digit',
@@ -38,9 +40,38 @@ const getWorkingDaysByAutocompilation = (
         day: '2-digit',
       }),
       WorkingHours: autoCompilation && !isWeekEnd ? 8 : 0,
+      isWorked: autoCompilation && !isWeekEnd ? true : false,
       isWeekend: autoCompilation && isWeekEnd,
     }
   })
 }
 
-export { getAllDates, toCapitalize, getWorkingDaysByAutocompilation }
+const countWorkedDays = (days: Day[]): number => {
+  const count = days.reduce(
+    (accumulator, currentValue) =>
+      currentValue.isWorked ? accumulator + 1 : accumulator,
+    0,
+  )
+
+  return count
+}
+
+const countWorkedHours = (days: Day[]): number => {
+  const count = days.reduce(
+    (accumulator, currentValue) =>
+      currentValue.isWorked
+        ? accumulator + currentValue.WorkingHours
+        : accumulator,
+    0,
+  )
+
+  return count
+}
+
+export {
+  getAllDates,
+  toCapitalize,
+  getWorkingDaysByAutocompilation,
+  countWorkedDays,
+  countWorkedHours,
+}
