@@ -1,0 +1,17 @@
+.gridItem {
+  border: 1px solid black;
+  padding: 15px;
+  text-transform: capitalize;
+  display: flex;
+  flex-direction: column;
+}
+
+.nOre {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.isWeekEnd{
+  background-color: red;
+}

@@ -1,0 +1,11 @@
+.ggContainer {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 15px;
+}
+
+.title {
+  text-align: left;
+  text-transform: capitalize;
+  margin-bottom: 16px;
+}
