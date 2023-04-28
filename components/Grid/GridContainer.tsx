@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getAllDates } from '../../utils/utils'
 import { Grid } from './Grid'
-import { Giorno } from '../GridItem/GridITem'
+import { Day } from '../GridItem/GridITem'
 
 const GridContainer: React.FunctionComponent<{}> = () => {
   const current_date = new Date()
@@ -27,10 +27,9 @@ const GridContainer: React.FunctionComponent<{}> = () => {
     })
   }
 
-  const initiaState: Giorno[] = getWorkingDaysByAutocompilation(false)
-  const stateWithAutocompilation: Giorno[] =
-    getWorkingDaysByAutocompilation(true)
-  const [giorni, setGiorni] = useState<Giorno[]>(initiaState)
+  const initiaState: Day[] = getWorkingDaysByAutocompilation(false)
+  const stateWithAutocompilation: Day[] = getWorkingDaysByAutocompilation(true)
+  const [giorni, setGiorni] = useState<Day[]>(initiaState)
   const [isAutoCompilation, setIsAutoCompilation] = useState(false)
 
   useEffect(() => {
@@ -43,10 +42,10 @@ const GridContainer: React.FunctionComponent<{}> = () => {
 
   return (
     <Grid
-      nome={current_date.toLocaleDateString('it-IT', {
+      month={current_date.toLocaleDateString('it-IT', {
         month: 'long',
       })}
-      giorni={giorni}
+      days={giorni}
       setAutoCompilation={setIsAutoCompilation}
     />
   )

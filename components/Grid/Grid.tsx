@@ -1,16 +1,16 @@
 import React from 'react'
 import style from './Grid.module.scss'
-import { GridITem, Giorno } from '../GridItem/GridITem'
+import { GridITem, Day } from '../GridItem/GridITem'
 
-export type GridProp = {
-  nome: string
-  giorni: Giorno[]
+export type Month = {
+  month: string
+  days: Day[]
   setAutoCompilation: (isAutoCompilation: boolean) => void
 }
 
-const Grid: React.FunctionComponent<GridProp> = ({
-  nome,
-  giorni,
+const Grid: React.FunctionComponent<Month> = ({
+  month,
+  days,
   setAutoCompilation,
 }) => {
   const headlerAutoCompilation = (
@@ -22,7 +22,7 @@ const Grid: React.FunctionComponent<GridProp> = ({
   return (
     <div>
       <div className={style.flexRowBetween}>
-        <h1 className={`${style.title}`}>{nome}</h1>
+        <h1 className={`${style.title}`}>{month}</h1>
         <div>
           <input
             type="checkbox"
@@ -36,7 +36,7 @@ const Grid: React.FunctionComponent<GridProp> = ({
         </div>
       </div>
       <div className={style.ggContainer}>
-        {giorni.map((_, index) => (
+        {days.map((_, index) => (
           <GridITem
             key={`GG${index}`}
             day={_.day}
@@ -45,6 +45,9 @@ const Grid: React.FunctionComponent<GridProp> = ({
             isWeekend={_.isWeekend}
           />
         ))}
+      </div>
+      <div>
+        <p>Giorni Lavorati : </p>
       </div>
     </div>
   )

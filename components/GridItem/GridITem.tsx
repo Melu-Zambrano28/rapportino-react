@@ -1,14 +1,14 @@
 import React from 'react'
 import style from './GridItem.module.scss'
 
-export type Giorno = {
+export type Day = {
   day: number
   weekDay: string
   WorkingHours: number
   isWeekend: boolean
 }
 
-const GridITem: React.FunctionComponent<Giorno> = ({
+const GridITem: React.FunctionComponent<Day> = ({
   day,
   weekDay,
   WorkingHours,
