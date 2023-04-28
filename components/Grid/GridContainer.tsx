@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getAllDates } from '../../utils/utils'
 import { Grid } from './Grid'
 import { Giorno } from '../GridItem/GridITem'
@@ -10,19 +10,36 @@ const GridContainer: React.FunctionComponent<{}> = () => {
     current_date.getFullYear(),
     current_date.getMonth(),
   )
-  const giorniMese: Giorno[] = allDates.map((_) => {
-    return {
-      day: current_date.getDate() + 1,
-      weekDay: _.toLocaleString('it-IT', {
-        weekday: 'long',
-        day: '2-digit',
-      }),
-      WorkingHours: 0,
-      isWeekend: false,
-    }
-  })
 
-  const [giorni, setGiorni] = useState<Giorno[]>(giorniMese)
+  const getWorkingDaysByAutocompilation = (autoCompilation: boolean) => {
+    return allDates.map((_) => {
+      const day = _.getDay() + 1
+      const isWeekEnd = day === 1 || day === 7
+      return {
+        day: current_date.getDate() + 1,
+        weekDay: _.toLocaleString('it-IT', {
+          weekday: 'long',
+          day: '2-digit',
+        }),
+        WorkingHours: autoCompilation && !isWeekEnd ? 8 : 0,
+        isWeekend: autoCompilation && isWeekEnd,
+      }
+    })
+  }
+
+  const initiaState: Giorno[] = getWorkingDaysByAutocompilation(false)
+  const stateWithAutocompilation: Giorno[] =
+    getWorkingDaysByAutocompilation(true)
+  const [giorni, setGiorni] = useState<Giorno[]>(initiaState)
+  const [isAutoCompilation, setIsAutoCompilation] = useState(false)
+
+  useEffect(() => {
+    if (isAutoCompilation) {
+      setGiorni(stateWithAutocompilation)
+    } else {
+      setGiorni(initiaState)
+    }
+  }, [isAutoCompilation])
 
   return (
     <Grid
@@ -30,6 +47,7 @@ const GridContainer: React.FunctionComponent<{}> = () => {
         month: 'long',
       })}
       giorni={giorni}
+      setAutoCompilation={setIsAutoCompilation}
     />
   )
 }

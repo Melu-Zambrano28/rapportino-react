@@ -9,3 +9,10 @@
   text-transform: capitalize;
   margin-bottom: 16px;
 }
+
+.flexRowBetween{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

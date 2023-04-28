@@ -5,12 +5,36 @@ import { GridITem, Giorno } from '../GridItem/GridITem'
 export type GridProp = {
   nome: string
   giorni: Giorno[]
+  setAutoCompilation: (isAutoCompilation: boolean) => void
 }
 
-const Grid: React.FunctionComponent<GridProp> = ({ nome, giorni }) => {
+const Grid: React.FunctionComponent<GridProp> = ({
+  nome,
+  giorni,
+  setAutoCompilation,
+}) => {
+  const headlerAutoCompilation = (
+    e: React.MouseEvent<HTMLInputElement, MouseEvent>,
+  ) => {
+    setAutoCompilation(e.currentTarget.checked)
+  }
+
   return (
     <div>
-      <h1 className={`${style.title}`}>{nome}</h1>
+      <div className={style.flexRowBetween}>
+        <h1 className={`${style.title}`}>{nome}</h1>
+        <div>
+          <input
+            type="checkbox"
+            id="compilaRapportino"
+            name="compilaRapportino"
+            value="S"
+            onClick={(e) => headlerAutoCompilation(e)}
+          />
+          <label htmlFor="compilaRapportino"> Compila Rapportino</label>
+          <br />
+        </div>
+      </div>
       <div className={style.ggContainer}>
         {giorni.map((_, index) => (
           <GridITem
