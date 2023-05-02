@@ -48,8 +48,8 @@ const Grid: React.FunctionComponent<Month> = ({
         {days.map((_, index) => (
           <GridITem
             key={`GG-ITem${index}`}
-            day={_.day}
-            weekDay={_.weekDay}
+            id={_.id}
+            date={_.date}
             WorkingHours={_.WorkingHours}
             isWeekend={_.isWeekend}
             isWorked={_.isWorked}

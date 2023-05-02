@@ -2,8 +2,8 @@ import React from 'react'
 import styles from './GridItem.module.scss'
 
 export type Day = {
-  day: number
-  weekDay: string
+  id: number
+  date: Date
   WorkingHours: number
   isWeekend: boolean
   isWorked: boolean
@@ -11,21 +11,25 @@ export type Day = {
 }
 
 const GridITem: React.FunctionComponent<Day> = ({
-  day,
-  weekDay,
+  id,
+  date,
   WorkingHours,
   isWeekend,
   isWorked,
   isHoliday,
 }) => {
   const weekEndClass = isWeekend || isHoliday ? 'isWeekEnd' : ''
+  const dateFormat = date.toLocaleString('it-IT', {
+    weekday: 'long',
+    day: '2-digit',
+  })
   return (
     <div
       className={`${styles['gridItem']} ${
         weekEndClass ? styles[weekEndClass] : ''
       }`}
     >
-      <div>{`${weekDay}`}</div>
+      <div>{`${dateFormat}`}</div>
       <div className={`${styles.nOre}`}>{`${WorkingHours}`}</div>
       {isHoliday && <div>{`Festivo`}</div>}
     </div>

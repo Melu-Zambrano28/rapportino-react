@@ -1,11 +1,6 @@
 import { Day } from '../components/GridItem'
 import { holidaysData } from './holidays'
 
-export const optionDatesGGMM = {
-  weekday: 'long',
-  day: '2-digit',
-}
-
 const getAllDates = (year: number, month: number): Date[] => {
   let date = new Date(year, month, 1)
   let dates: Date[] = []
@@ -91,11 +86,8 @@ const getWorkingDaysByAutocompilation = (
     const isHoliday = monthHolidays.some((holiday) => holiday === day)
 
     return {
-      day: day,
-      weekDay: _.toLocaleString('it-IT', {
-        weekday: 'long',
-        day: '2-digit',
-      }),
+      id: day,
+      date: _,
       WorkingHours: autoCompilation && !isWeekEnd ? 8 : 0,
       isWorked: autoCompilation && !isWeekEnd ? true : false,
       isWeekend: autoCompilation && isWeekEnd,
