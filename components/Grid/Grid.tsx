@@ -34,13 +34,13 @@ const Grid: React.FunctionComponent<Month> = ({
         <div>
           <input
             type="checkbox"
-            id="compilaRapportino"
-            name="compilaRapportino"
+            id="completeTimeshet"
+            name="completeTimeshet"
             value={`${isAutoCompilation ? 'S' : 'N'}`}
             defaultChecked={isAutoCompilation}
             onClick={(e) => headlerAutoCompilation(e)}
           />
-          <label htmlFor="compilaRapportino"> Compila Rapportino</label>
+          <label htmlFor="completeReport"> Compila Rapportino</label>
           <br />
         </div>
       </div>
@@ -52,7 +52,8 @@ const Grid: React.FunctionComponent<Month> = ({
             weekDay={_.weekDay}
             WorkingHours={_.WorkingHours}
             isWeekend={_.isWeekend}
-            isWorked={false}
+            isWorked={_.isWorked}
+            isHoliday={_.isHoliday}
           />
         ))}
       </div>

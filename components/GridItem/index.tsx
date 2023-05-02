@@ -7,6 +7,7 @@ export type Day = {
   WorkingHours: number
   isWeekend: boolean
   isWorked: boolean
+  isHoliday: boolean
 }
 
 const GridITem: React.FunctionComponent<Day> = ({
@@ -15,8 +16,9 @@ const GridITem: React.FunctionComponent<Day> = ({
   WorkingHours,
   isWeekend,
   isWorked,
+  isHoliday,
 }) => {
-  const weekEndClass = isWeekend ? 'isWeekEnd' : ''
+  const weekEndClass = isWeekend || isHoliday ? 'isWeekEnd' : ''
   return (
     <div
       className={`${styles['gridItem']} ${
@@ -25,6 +27,7 @@ const GridITem: React.FunctionComponent<Day> = ({
     >
       <div>{`${weekDay}`}</div>
       <div className={`${styles.nOre}`}>{`${WorkingHours}`}</div>
+      {isHoliday && <div>{`Festivo`}</div>}
     </div>
   )
 }

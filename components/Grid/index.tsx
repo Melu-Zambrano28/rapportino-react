@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import {
   countWorkedDays,
   countWorkedHours,
-  getAllDates,
+  getHolidays,
   getWorkingDaysByAutocompilation,
 } from '../../utils/utils'
 import { Grid } from './Grid'
@@ -18,14 +18,9 @@ import {
 
 const current_date = new Date()
 
-const allDates = getAllDates(
-  current_date.getFullYear(),
-  current_date.getMonth(),
-)
-
-const initiaState: Day[] = getWorkingDaysByAutocompilation(allDates, false)
+const initiaState: Day[] = getWorkingDaysByAutocompilation(current_date, false)
 const stateWithAutocompilation: Day[] = getWorkingDaysByAutocompilation(
-  allDates,
+  current_date,
   true,
 )
 
