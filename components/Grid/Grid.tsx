@@ -1,6 +1,8 @@
 import React from 'react'
 import styles from './Grid.module.scss'
 import { GridITem, Day } from '../GridItem/GridITem'
+import { useAtom } from 'jotai'
+import { autoCompilationAtom } from './atoms/GridAtoms'
 
 export type Month = {
   month: string
@@ -21,6 +23,8 @@ const Grid: React.FunctionComponent<Month> = ({
     setAutoCompilation(e.currentTarget.checked)
   }
 
+  const [isAutoCompilation] = useAtom(autoCompilationAtom)
+
   return (
     <div>
       <div className={styles.flexRowBetween}>
@@ -32,7 +36,8 @@ const Grid: React.FunctionComponent<Month> = ({
             type="checkbox"
             id="compilaRapportino"
             name="compilaRapportino"
-            value="S"
+            value={`${isAutoCompilation ? 'S' : 'N'}`}
+            defaultChecked={isAutoCompilation}
             onClick={(e) => headlerAutoCompilation(e)}
           />
           <label htmlFor="compilaRapportino"> Compila Rapportino</label>

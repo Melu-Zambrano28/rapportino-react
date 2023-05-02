@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
   countWorkedDays,
   countWorkedHours,
@@ -8,35 +8,44 @@ import {
 import { Grid } from './Grid'
 import { Day } from '../GridItem/GridITem'
 import styles from './Grid.module.scss'
+import { useAtom } from 'jotai'
+import {
+  autoCompilationAtom,
+  daysAtom,
+  workedDaysAtom,
+  workedHoursAtom,
+} from './atoms/GridAtoms'
+
+const current_date = new Date()
+
+const allDates = getAllDates(
+  current_date.getFullYear(),
+  current_date.getMonth(),
+)
+
+const initiaState: Day[] = getWorkingDaysByAutocompilation(allDates, false)
+const stateWithAutocompilation: Day[] = getWorkingDaysByAutocompilation(
+  allDates,
+  true,
+)
 
 const GridContainer: React.FunctionComponent<{}> = () => {
-  const current_date = new Date()
+  const [days, setDays] = useAtom(daysAtom)
 
-  const allDates = getAllDates(
-    current_date.getFullYear(),
-    current_date.getMonth(),
-  )
-
-  const initiaState: Day[] = getWorkingDaysByAutocompilation(allDates, false)
-  const stateWithAutocompilation: Day[] = getWorkingDaysByAutocompilation(
-    allDates,
-    true,
-  )
-  const [giorni, setGiorni] = useState<Day[]>(initiaState)
-  const [isAutoCompilation, setIsAutoCompilation] = useState(false)
-  const [workedDays, setWorkedDays] = useState(0)
-  const [workedHours, setWorkedHours] = useState(0)
+  const [isAutoCompilation, setIsAutoCompilation] = useAtom(autoCompilationAtom)
+  const [workedDays, setWorkedDays] = useAtom(workedDaysAtom)
+  const [workedHours, setWorkedHours] = useAtom(workedHoursAtom)
 
   useEffect(() => {
     if (isAutoCompilation) {
       const resultWorkedDays = countWorkedDays(stateWithAutocompilation)
       const resultWorkedHours = countWorkedHours(stateWithAutocompilation)
 
-      setGiorni(stateWithAutocompilation)
+      setDays(stateWithAutocompilation)
       setWorkedDays(resultWorkedDays)
       setWorkedHours(resultWorkedHours)
     } else {
-      setGiorni(initiaState)
+      setDays(initiaState)
       setWorkedDays(0)
       setWorkedHours(0)
     }
@@ -49,7 +58,7 @@ const GridContainer: React.FunctionComponent<{}> = () => {
           month: 'long',
         })}
         year={current_date.getFullYear()}
-        days={giorni}
+        days={days}
         setAutoCompilation={setIsAutoCompilation}
       />
       <div className={`${styles.flexColumnEnd}`}>
