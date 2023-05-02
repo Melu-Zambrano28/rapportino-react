@@ -48,6 +48,7 @@ const GridContainer: React.FunctionComponent<{}> = () => {
         month={current_date.toLocaleDateString('it-IT', {
           month: 'long',
         })}
+        year={current_date.getFullYear()}
         days={giorni}
         setAutoCompilation={setIsAutoCompilation}
       />
