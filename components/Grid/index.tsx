@@ -6,7 +6,7 @@ import {
   getWorkingDaysByAutocompilation,
 } from '../../utils/utils'
 import { Grid } from './Grid'
-import { Day } from '../GridItem/GridITem'
+import { Day } from '../GridItem'
 import styles from './Grid.module.scss'
 import { useAtom } from 'jotai'
 import {

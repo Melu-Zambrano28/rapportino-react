@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './Grid.module.scss'
-import { GridITem, Day } from '../GridItem/GridITem'
+import { GridITem, Day } from '../GridItem'
 import { useAtom } from 'jotai'
 import { autoCompilationAtom } from './atoms/GridAtoms'
 

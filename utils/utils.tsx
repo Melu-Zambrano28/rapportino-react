@@ -1,4 +1,4 @@
-import { Day } from '../components/GridItem/GridITem'
+import { Day } from '../components/GridItem'
 
 export const optionDatesGGMM = {
   weekday: 'long',

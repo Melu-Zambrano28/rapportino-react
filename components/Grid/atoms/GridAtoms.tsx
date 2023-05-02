@@ -1,5 +1,5 @@
 import { atomWithStorage } from 'jotai/utils'
-import { Day } from '../../GridItem/GridITem'
+import { Day } from '../../GridItem'
 
 export const daysAtom = atomWithStorage<Day[]>('daysAtom', [])
 export const autoCompilationAtom = atomWithStorage<boolean>(
