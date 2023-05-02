@@ -88,10 +88,10 @@ const getWorkingDaysByAutocompilation = (
     return {
       id: day,
       date: _,
-      WorkingHours: autoCompilation && !isWeekEnd ? 8 : 0,
+      WorkingHours: autoCompilation && !isWeekEnd && !isHoliday ? 8 : 0,
       isWorked: autoCompilation && !isWeekEnd ? true : false,
       isWeekend: autoCompilation && isWeekEnd,
-      isHoliday: isHoliday,
+      isHoliday: autoCompilation && isHoliday,
     }
   })
 }
