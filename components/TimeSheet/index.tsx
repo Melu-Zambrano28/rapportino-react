@@ -2,19 +2,17 @@ import { useEffect } from 'react'
 import {
   countWorkedDays,
   countWorkedHours,
-  getHolidays,
   getWorkingDaysByAutocompilation,
 } from '../../utils/utils'
-import { Grid } from './Grid'
+import { Grid } from '../Grid/Grid'
 import { Day } from '../GridItem'
-import styles from './Grid.module.scss'
 import { useAtom } from 'jotai'
 import {
   autoCompilationAtom,
   daysAtom,
   workedDaysAtom,
   workedHoursAtom,
-} from './atoms/GridAtoms'
+} from '../Grid/atoms/GridAtoms'
 
 const current_date = new Date()
 
@@ -24,7 +22,7 @@ const stateWithAutocompilation: Day[] = getWorkingDaysByAutocompilation(
   true,
 )
 
-const GridContainer: React.FunctionComponent<{}> = () => {
+const TimeSheet: React.FunctionComponent<{}> = () => {
   const [days, setDays] = useAtom(daysAtom)
 
   const [isAutoCompilation, setIsAutoCompilation] = useAtom(autoCompilationAtom)
@@ -56,7 +54,7 @@ const GridContainer: React.FunctionComponent<{}> = () => {
         days={days}
         setAutoCompilation={setIsAutoCompilation}
       />
-      <div className={`${styles.flexColumnEnd}`}>
+      <div className={`flexColumnEnd`}>
         <div>
           <p>Giorni Lavorati : {workedDays}</p>
           <p>Ore Lavorate : {workedHours}</p>
@@ -66,4 +64,4 @@ const GridContainer: React.FunctionComponent<{}> = () => {
   )
 }
 
-export { GridContainer }
+export { TimeSheet }

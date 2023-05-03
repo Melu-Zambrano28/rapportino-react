@@ -40,7 +40,7 @@ const Grid: React.FunctionComponent<Month> = ({
             defaultChecked={isAutoCompilation}
             onClick={(e) => headlerAutoCompilation(e)}
           />
-          <label htmlFor="completeReport"> Compila Rapportino</label>
+          <label htmlFor="completeTimeshet"> Compila Rapportino</label>
           <br />
         </div>
       </div>
