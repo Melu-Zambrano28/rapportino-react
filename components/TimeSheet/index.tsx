@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   countWorkedDays,
   countWorkedHours,
@@ -23,11 +23,11 @@ const stateWithAutocompilation: Day[] = getWorkingDaysByAutocompilation(
 )
 
 const TimeSheet: React.FunctionComponent<{}> = () => {
-  const [days, setDays] = useAtom(daysAtom)
+  const [days, setDays] = useState(initiaState)
 
-  const [isAutoCompilation, setIsAutoCompilation] = useAtom(autoCompilationAtom)
-  const [workedDays, setWorkedDays] = useAtom(workedDaysAtom)
-  const [workedHours, setWorkedHours] = useAtom(workedHoursAtom)
+  const [isAutoCompilation, setIsAutoCompilation] = useState(false)
+  const [workedDays, setWorkedDays] = useState(0)
+  const [workedHours, setWorkedHours] = useState(0)
 
   useEffect(() => {
     if (isAutoCompilation) {
@@ -42,7 +42,7 @@ const TimeSheet: React.FunctionComponent<{}> = () => {
       setWorkedDays(0)
       setWorkedHours(0)
     }
-  }, [isAutoCompilation, workedDays])
+  }, [isAutoCompilation, workedDays, workedHours])
 
   return (
     <div>
@@ -53,6 +53,7 @@ const TimeSheet: React.FunctionComponent<{}> = () => {
         year={current_date.getFullYear()}
         days={days}
         setAutoCompilation={setIsAutoCompilation}
+        setDays={setDays}
       />
       <div className={`flexColumnEnd`}>
         <div>

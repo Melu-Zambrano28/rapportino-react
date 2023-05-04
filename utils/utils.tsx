@@ -85,13 +85,24 @@ const getWorkingDaysByAutocompilation = (
 
     const isHoliday = monthHolidays.some((holiday) => holiday === day)
 
+    if (!autoCompilation) {
+      return {
+        id: day,
+        date: _,
+        WorkingHours: 0,
+        isWorked: false,
+        isWeekend: false,
+        isHoliday: false,
+      }
+    }
+
     return {
       id: day,
       date: _,
-      WorkingHours: autoCompilation && !isWeekEnd && !isHoliday ? 8 : 0,
-      isWorked: autoCompilation && !isWeekEnd ? true : false,
-      isWeekend: autoCompilation && isWeekEnd,
-      isHoliday: autoCompilation && isHoliday,
+      WorkingHours: !isWeekEnd && !isHoliday ? 8 : 0,
+      isWorked: !isWeekEnd && !isHoliday ? true : false,
+      isWeekend: isWeekEnd,
+      isHoliday: isHoliday,
     }
   })
 }

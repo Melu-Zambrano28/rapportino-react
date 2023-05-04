@@ -9,6 +9,7 @@ export type Month = {
   year: number
   days: Day[]
   setAutoCompilation: (isAutoCompilation: boolean) => void
+  setDays: (days: Day[]) => void
 }
 
 const Grid: React.FunctionComponent<Month> = ({
@@ -16,6 +17,7 @@ const Grid: React.FunctionComponent<Month> = ({
   year,
   days,
   setAutoCompilation,
+  setDays,
 }) => {
   const headlerAutoCompilation = (
     e: React.MouseEvent<HTMLInputElement, MouseEvent>,
@@ -23,7 +25,17 @@ const Grid: React.FunctionComponent<Month> = ({
     setAutoCompilation(e.currentTarget.checked)
   }
 
-  const [isAutoCompilation] = useAtom(autoCompilationAtom)
+  const isAutoCompilation = false
+
+  const setSingleDay = (day: Day) => {
+    const newDays = days.map((item) => {
+      if (item.id === day.id) {
+        return { ...item, ...day }
+      }
+      return item
+    })
+    setDays(newDays)
+  }
 
   return (
     <div>
@@ -48,12 +60,15 @@ const Grid: React.FunctionComponent<Month> = ({
         {days.map((_, index) => (
           <GridITem
             key={`GG-ITem${index}`}
-            id={_.id}
-            date={_.date}
-            WorkingHours={_.WorkingHours}
-            isWeekend={_.isWeekend}
-            isWorked={_.isWorked}
-            isHoliday={_.isHoliday}
+            day={{
+              id: _.id,
+              date: _.date,
+              WorkingHours: _.WorkingHours,
+              isWeekend: _.isWeekend,
+              isWorked: _.isWorked,
+              isHoliday: _.isHoliday,
+            }}
+            handleDay={setSingleDay}
           />
         ))}
       </div>
