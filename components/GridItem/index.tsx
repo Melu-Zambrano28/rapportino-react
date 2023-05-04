@@ -41,9 +41,8 @@ const GridITem: React.FunctionComponent<GridItemProp> = ({
           type="checkbox"
           id={`isWorkingDay${day.id}`}
           name={`isWorkingDay${day.id}`}
-          defaultValue={`${day.isWorked ? ['S'] : ['N']}`}
-          defaultChecked={day.isWorked}
-          readOnly={true}
+          value={`${day.isWorked ? 'S' : 'N'}`}
+          checked={day.isWorked}
           onChange={(e) => toggleWorkingDay(e.target.checked)}
         />
 

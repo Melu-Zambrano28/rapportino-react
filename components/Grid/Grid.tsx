@@ -4,9 +4,12 @@ import { GridITem, Day } from '../GridItem'
 import { SimpleGrid } from '@mantine/core'
 import {
   countWorkedDays,
+  countWorkedDaysCounter,
   countWorkedHours,
   getWorkingDaysByAutocompilation,
 } from '../../utils/utils'
+import { atom, useAtom } from 'jotai'
+import { autoCompilationAtom } from './atoms/GridAtoms'
 
 type TimeSheetStates = {
   setAutoCompilation: (a: boolean) => void
@@ -31,24 +34,16 @@ const Grid: React.FunctionComponent<Month> = ({
   const { setAutoCompilation, setDays, setWorkedDays, setWorkedHours } =
     TimeSheetStates
 
-  const headlerAutoCompilation = (
-    e: React.MouseEvent<HTMLInputElement, MouseEvent>,
-  ) => {
-    const days = getWorkingDaysByAutocompilation(
-      new Date(),
-      e.currentTarget.checked,
-    )
+  const headlerAutoCompilation = (checkCompilation: boolean) => {
+    const days = getWorkingDaysByAutocompilation(new Date(), checkCompilation)
 
-    const resultWorkedDays = countWorkedDays(days)
-    const resultWorkedHours = countWorkedHours(days)
+    const counters = countWorkedDaysCounter(days)
 
     setDays(days)
-    setAutoCompilation(e.currentTarget.checked)
-    setWorkedDays(resultWorkedDays)
-    setWorkedHours(resultWorkedHours)
+    setAutoCompilation(checkCompilation)
+    setWorkedDays(counters.workedDays)
+    setWorkedHours(counters.workedHous)
   }
-
-  const isAutoCompilation = false
 
   const setSingleDay = (day: Day) => {
     const newDays = days.map((item) => {
@@ -57,7 +52,10 @@ const Grid: React.FunctionComponent<Month> = ({
       }
       return item
     })
+    const counters = countWorkedDaysCounter(newDays)
     setDays(newDays)
+    setWorkedDays(counters.workedDays)
+    setWorkedHours(counters.workedHous)
   }
 
   return (
@@ -71,9 +69,8 @@ const Grid: React.FunctionComponent<Month> = ({
             type="checkbox"
             id="completeTimeshet"
             name="completeTimeshet"
-            value={`${isAutoCompilation ? 'S' : 'N'}`}
-            defaultChecked={isAutoCompilation}
-            onClick={(e) => headlerAutoCompilation(e)}
+            defaultChecked={false}
+            onChange={(e) => headlerAutoCompilation(e.target.checked)}
           />
           <label htmlFor="completeTimeshet"> Compila Rapportino</label>
           <br />

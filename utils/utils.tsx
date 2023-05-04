@@ -85,24 +85,23 @@ const getWorkingDaysByAutocompilation = (
 
     const isHoliday = monthHolidays.some((holiday) => holiday === day)
 
+    const initialDay = {
+      id: day,
+      date: _,
+      WorkingHours: 0,
+      isWorked: false,
+      isWeekend: isWeekEnd,
+      isHoliday: isHoliday,
+    }
+
     if (!autoCompilation) {
-      return {
-        id: day,
-        date: _,
-        WorkingHours: 0,
-        isWorked: false,
-        isWeekend: false,
-        isHoliday: false,
-      }
+      return initialDay
     }
 
     return {
-      id: day,
-      date: _,
+      ...initialDay,
       WorkingHours: !isWeekEnd && !isHoliday ? 8 : 0,
       isWorked: !isWeekEnd && !isHoliday ? true : false,
-      isWeekend: isWeekEnd,
-      isHoliday: isHoliday,
     }
   })
 }
@@ -129,6 +128,32 @@ const countWorkedHours = (days: Day[]): number => {
   return count
 }
 
+type Counters = {
+  workedDays: number
+  workedHous: number
+}
+
+const countWorkedDaysCounter = (days: Day[]): Counters => {
+  const counters = days.reduce(
+    (accumulator, currentValue) => {
+      return {
+        workedDays: currentValue.isWorked
+          ? accumulator.workedDays + 1
+          : accumulator.workedDays,
+        workedHous: currentValue.isWorked
+          ? accumulator.workedHous + currentValue.WorkingHours
+          : accumulator.workedHous,
+      }
+    },
+    {
+      workedDays: 0,
+      workedHous: 0,
+    },
+  )
+
+  return counters
+}
+
 export {
   getAllDates,
   toCapitalize,
@@ -137,4 +162,5 @@ export {
   countWorkedHours,
   getEeaster,
   getHolidays,
+  countWorkedDaysCounter,
 }
