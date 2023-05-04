@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import styles from './GridItem.module.scss'
 
 export type Day = {
@@ -41,9 +41,10 @@ const GridITem: React.FunctionComponent<GridItemProp> = ({
           type="checkbox"
           id={`isWorkingDay${day.id}`}
           name={`isWorkingDay${day.id}`}
-          defaultValue={`${day.isWorked ? 'S' : 'N'}`}
+          defaultValue={`${day.isWorked ? ['S'] : ['N']}`}
           defaultChecked={day.isWorked}
-          onClick={(e) => toggleWorkingDay(e.currentTarget.checked)}
+          readOnly={true}
+          onChange={(e) => toggleWorkingDay(e.target.checked)}
         />
 
         <label htmlFor={`isWorkingDay${day.id}`}> {`${dateFormat}`}</label>

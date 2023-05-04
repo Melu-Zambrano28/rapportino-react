@@ -1,28 +1,51 @@
 import React from 'react'
 import styles from './Grid.module.scss'
 import { GridITem, Day } from '../GridItem'
-import { useAtom } from 'jotai'
-import { autoCompilationAtom } from './atoms/GridAtoms'
+import { SimpleGrid } from '@mantine/core'
+import {
+  countWorkedDays,
+  countWorkedHours,
+  getWorkingDaysByAutocompilation,
+} from '../../utils/utils'
+
+type TimeSheetStates = {
+  setAutoCompilation: (a: boolean) => void
+  setDays: (d: Day[]) => void
+  setWorkedDays: (n: number) => void
+  setWorkedHours: (n: number) => void
+}
 
 export type Month = {
   month: string
   year: number
   days: Day[]
-  setAutoCompilation: (isAutoCompilation: boolean) => void
-  setDays: (days: Day[]) => void
+  TimeSheetStates: TimeSheetStates
 }
 
 const Grid: React.FunctionComponent<Month> = ({
   month,
   year,
   days,
-  setAutoCompilation,
-  setDays,
+  TimeSheetStates,
 }) => {
+  const { setAutoCompilation, setDays, setWorkedDays, setWorkedHours } =
+    TimeSheetStates
+
   const headlerAutoCompilation = (
     e: React.MouseEvent<HTMLInputElement, MouseEvent>,
   ) => {
+    const days = getWorkingDaysByAutocompilation(
+      new Date(),
+      e.currentTarget.checked,
+    )
+
+    const resultWorkedDays = countWorkedDays(days)
+    const resultWorkedHours = countWorkedHours(days)
+
+    setDays(days)
     setAutoCompilation(e.currentTarget.checked)
+    setWorkedDays(resultWorkedDays)
+    setWorkedHours(resultWorkedHours)
   }
 
   const isAutoCompilation = false
@@ -56,7 +79,7 @@ const Grid: React.FunctionComponent<Month> = ({
           <br />
         </div>
       </div>
-      <div className={styles.ggContainer}>
+      <SimpleGrid cols={7}>
         {days.map((_, index) => (
           <GridITem
             key={`GG-ITem${index}`}
@@ -71,7 +94,7 @@ const Grid: React.FunctionComponent<Month> = ({
             handleDay={setSingleDay}
           />
         ))}
-      </div>
+      </SimpleGrid>
     </div>
   )
 }
