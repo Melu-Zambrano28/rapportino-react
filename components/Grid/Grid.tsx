@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './Grid.module.scss'
 import { GridITem, Day } from '../GridItem'
-import { SimpleGrid } from '@mantine/core'
+import { Box, Flex, SimpleGrid, Title } from '@mantine/core'
 import {
   countWorkedDays,
   countWorkedDaysCounter,
@@ -59,12 +59,12 @@ const Grid: React.FunctionComponent<Month> = ({
   }
 
   return (
-    <div>
-      <div className={styles.flexRowBetween}>
-        <h1 className={`${styles.title}`}>
+    <Box>
+      <Flex direction={`row`} justify={`space-between`} align={`center`}>
+        <Title order={1} ta={`left`} tt={`capitalize`} mb={20}>
           {month} {year}
-        </h1>
-        <div>
+        </Title>
+        <Box>
           <input
             type="checkbox"
             id="completeTimeshet"
@@ -74,9 +74,16 @@ const Grid: React.FunctionComponent<Month> = ({
           />
           <label htmlFor="completeTimeshet"> Compila Rapportino</label>
           <br />
-        </div>
-      </div>
-      <SimpleGrid cols={7}>
+        </Box>
+      </Flex>
+      <SimpleGrid
+        cols={7}
+        breakpoints={[
+          { maxWidth: 'md', cols: 5, spacing: 'md' },
+          { maxWidth: 'sm', cols: 2, spacing: 'sm' },
+          { maxWidth: 'xs', cols: 3, spacing: 'sm' },
+        ]}
+      >
         {days.map((_, index) => (
           <GridITem
             key={`GG-ITem${index}`}
@@ -92,7 +99,7 @@ const Grid: React.FunctionComponent<Month> = ({
           />
         ))}
       </SimpleGrid>
-    </div>
+    </Box>
   )
 }
 

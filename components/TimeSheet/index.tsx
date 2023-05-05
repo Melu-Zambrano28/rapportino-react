@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { getWorkingDaysByAutocompilation } from '../../utils/utils'
 import { Grid } from '../Grid/Grid'
 import { Day } from '../GridItem'
-import { Flex } from '@mantine/core'
+import { Box, Divider, Flex, Title } from '@mantine/core'
 
 const current_date = new Date()
 
@@ -16,7 +16,11 @@ const TimeSheet: React.FunctionComponent<{}> = () => {
   const [workedHours, setWorkedHours] = useState(0)
 
   return (
-    <div>
+    <Flex
+      direction={{ sm: 'column', md: 'row' }}
+      gap={{ base: 'sm', sm: 'lg' }}
+      justify={`center`}
+    >
       <Grid
         month={current_date.toLocaleDateString('it-IT', {
           month: 'long',
@@ -30,13 +34,18 @@ const TimeSheet: React.FunctionComponent<{}> = () => {
           setWorkedHours: setWorkedHours,
         }}
       />
-      <Flex direction={{ base: 'column' }} align={`end`}>
-        <div>
+      <Divider orientation="vertical" />
+
+      <Flex direction={{ base: 'column' }}>
+        <Title order={1} ta={`center`} tt={`capitalize`} mb={20}>
+          Totale
+        </Title>
+        <Box>
           <p>Giorni Lavorati : {workedDays}</p>
           <p>Ore Lavorate : {workedHours}</p>
-        </div>
+        </Box>
       </Flex>
-    </div>
+    </Flex>
   )
 }
 
