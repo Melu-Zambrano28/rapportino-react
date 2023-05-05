@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { getWorkingDaysByAutocompilation } from '../../utils/utils'
 import { Grid } from '../Grid/Grid'
 import { Day } from '../GridItem'
+import { Flex } from '@mantine/core'
 
 const current_date = new Date()
 
@@ -29,12 +30,12 @@ const TimeSheet: React.FunctionComponent<{}> = () => {
           setWorkedHours: setWorkedHours,
         }}
       />
-      <div className={`flexColumnEnd`}>
+      <Flex direction={{ base: 'column' }} align={`end`}>
         <div>
           <p>Giorni Lavorati : {workedDays}</p>
           <p>Ore Lavorate : {workedHours}</p>
         </div>
-      </div>
+      </Flex>
     </div>
   )
 }
