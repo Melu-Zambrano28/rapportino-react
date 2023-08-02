@@ -1,15 +1,10 @@
 import React from 'react'
-import styles from './Grid.module.scss'
 import { GridITem, Day } from '../GridItem'
 import { Box, Flex, SimpleGrid, Title } from '@mantine/core'
 import {
-  countWorkedDays,
   countWorkedDaysCounter,
-  countWorkedHours,
   getWorkingDaysByAutocompilation,
 } from '../../utils/utils'
-import { atom, useAtom } from 'jotai'
-import { autoCompilationAtom } from './atoms/GridAtoms'
 
 type TimeSheetStates = {
   setAutoCompilation: (a: boolean) => void
@@ -34,7 +29,7 @@ const Grid: React.FunctionComponent<Month> = ({
   const { setAutoCompilation, setDays, setWorkedDays, setWorkedHours } =
     TimeSheetStates
 
-  const headlerAutoCompilation = (checkCompilation: boolean) => {
+  const handleAutoCompilation = (checkCompilation: boolean) => {
     const days = getWorkingDaysByAutocompilation(new Date(), checkCompilation)
 
     const counters = countWorkedDaysCounter(days)
@@ -70,7 +65,7 @@ const Grid: React.FunctionComponent<Month> = ({
             id="completeTimeshet"
             name="completeTimeshet"
             defaultChecked={false}
-            onChange={(e) => headlerAutoCompilation(e.target.checked)}
+            onChange={(e) => handleAutoCompilation(e.target.checked)}
           />
           <label htmlFor="completeTimeshet"> Compila Rapportino</label>
           <br />

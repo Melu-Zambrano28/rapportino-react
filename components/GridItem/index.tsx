@@ -1,6 +1,5 @@
 import React from 'react'
-import styles from './GridItem.module.scss'
-import { Card, Flex, Text, Title } from '@mantine/core'
+import { Card, Flex, NumberInput, Title } from '@mantine/core'
 
 export type Day = {
   readonly id: number
@@ -20,7 +19,7 @@ const GridITem: React.FunctionComponent<GridItemProp> = ({
   day,
   handleDay,
 }) => {
-  const noWorkingBg = day.isWeekend || day.isHoliday ? '#FA5252' : ''
+  const noWorkingBg = day.isWeekend || day.isHoliday ? '#FA5252' : 'transparent'
   const noWorkingColor = day.isWeekend || day.isHoliday ? 'white' : 'black'
   const dateFormat = day.date.toLocaleString('it-IT', {
     weekday: 'long',
@@ -32,13 +31,27 @@ const GridITem: React.FunctionComponent<GridItemProp> = ({
     handleDay({ ...day, isWorked: isWorked, WorkingHours: workingHours })
   }
 
+  const toggleWorkingHours = (workingHours: number) => {
+    const totWorkingHours = workingHours ? workingHours : 0.0
+
+    if (totWorkingHours <= 0) {
+      handleDay({ ...day, isWorked: false, WorkingHours: totWorkingHours })
+      return
+    }
+
+    handleDay({ ...day, isWorked: true, WorkingHours: totWorkingHours })
+  }
+
   return (
     <Card withBorder shadow="sm" radius="md">
       <Card.Section
         withBorder
         inheritPadding
         py="xs"
-        style={{ backgroundColor: noWorkingBg, color: noWorkingColor }}
+        style={{
+          backgroundColor: noWorkingBg,
+          color: noWorkingColor,
+        }}
       >
         <input
           type="checkbox"
@@ -55,8 +68,17 @@ const GridITem: React.FunctionComponent<GridItemProp> = ({
       </Card.Section>
       <Card.Section withBorder inheritPadding py="xs">
         <Flex direction={`column`}>
-          <Text ta="center" fz={32} fw="700">{`${day.WorkingHours}`}</Text>
-          <Flex direction={`column`} align={`center`}>
+          <NumberInput
+            value={day.WorkingHours ? day.WorkingHours : 0.0}
+            placeholder="Ore Lavorate"
+            min={0}
+            max={24}
+            step={0.05}
+            precision={1}
+            onChange={(val: number) => toggleWorkingHours(val)}
+            required
+          />
+          <Flex direction={`column`} align={`center`} m={2}>
             <div>{day.isHoliday && <div>{`Festivo`}</div>}</div>
           </Flex>
         </Flex>
