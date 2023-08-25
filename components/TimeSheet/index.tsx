@@ -8,12 +8,33 @@ const current_date = new Date()
 
 const initiaState: Day[] = getWorkingDaysByAutocompilation(current_date, false)
 
-const TimeSheet: React.FunctionComponent<{}> = () => {
-  const [days, setDays] = useState(initiaState)
+export type Month = {
+  idMonth: string
+  year: number
+  days: Day[]
+  isAutocompilation: boolean
+  workedDays: number
+  workedHous: number
+}
 
-  const [isAutoCompilation, setIsAutoCompilation] = useState(false)
-  const [workedDays, setWorkedDays] = useState(0)
-  const [workedHours, setWorkedHours] = useState(0)
+const TimeSheet: React.FunctionComponent<{}> = () => {
+  const [month, setMonth] = useState<Month>({
+    idMonth: current_date.toLocaleDateString('it-IT', {
+      month: 'long',
+    }),
+    year: current_date.getFullYear(),
+    days: initiaState,
+    isAutocompilation: false,
+    workedDays: 0,
+    workedHous: 0,
+  })
+
+  const handleSingleCell = (newState: Month) => {
+    setMonth({
+      ...month,
+      ...newState,
+    })
+  }
 
   return (
     <Flex
@@ -21,19 +42,7 @@ const TimeSheet: React.FunctionComponent<{}> = () => {
       gap={{ base: 'sm', sm: 'lg' }}
       justify={`center`}
     >
-      <Grid
-        month={current_date.toLocaleDateString('it-IT', {
-          month: 'long',
-        })}
-        year={current_date.getFullYear()}
-        days={days}
-        TimeSheetStates={{
-          setDays: setDays,
-          setAutoCompilation: setIsAutoCompilation,
-          setWorkedDays: setWorkedDays,
-          setWorkedHours: setWorkedHours,
-        }}
-      />
+      <Grid month={month} handleMonth={handleSingleCell} />
       <Divider orientation="vertical" />
 
       <Flex direction={{ base: 'column' }}>
@@ -41,8 +50,8 @@ const TimeSheet: React.FunctionComponent<{}> = () => {
           Totale
         </Title>
         <Box>
-          <p>Giorni Lavorati : {workedDays}</p>
-          <p>Ore Lavorate : {workedHours}</p>
+          <p>Giorni Lavorati : {month.workedDays}</p>
+          <p>Ore Lavorate : {month.workedHous}</p>
         </Box>
       </Flex>
     </Flex>

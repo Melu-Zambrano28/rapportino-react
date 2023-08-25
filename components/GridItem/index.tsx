@@ -1,5 +1,9 @@
 import React from 'react'
-import { Card, Flex, NumberInput, Title } from '@mantine/core'
+import { Box, Card, Flex, NumberInput, Title } from '@mantine/core'
+import {
+  NO_WORKING_DAY_STYLE,
+  mappCardStyle,
+} from './adapter/gritemITemAdapter'
 
 export type Day = {
   readonly id: number
@@ -8,6 +12,7 @@ export type Day = {
   isWeekend: boolean
   isWorked: boolean
   isHoliday: boolean
+  isSickDay: boolean
 }
 
 type GridItemProp = {
@@ -19,8 +24,8 @@ const GridITem: React.FunctionComponent<GridItemProp> = ({
   day,
   handleDay,
 }) => {
-  const noWorkingBg = day.isWeekend || day.isHoliday ? '#FA5252' : 'transparent'
-  const noWorkingColor = day.isWeekend || day.isHoliday ? 'white' : 'black'
+  const cardDayStyle = mappCardStyle(day)
+
   const dateFormat = day.date.toLocaleString('it-IT', {
     weekday: 'long',
     day: '2-digit',
@@ -42,17 +47,19 @@ const GridITem: React.FunctionComponent<GridItemProp> = ({
     handleDay({ ...day, isWorked: true, WorkingHours: totWorkingHours })
   }
 
+  const toggleSickDay = (isSickDay: boolean) => {
+    const workingHours = isSickDay ? 0 : 8
+    handleDay({
+      ...day,
+      isWorked: isSickDay ? false : true,
+      WorkingHours: workingHours,
+      isSickDay: isSickDay,
+    })
+  }
+
   return (
     <Card withBorder shadow="sm" radius="md">
-      <Card.Section
-        withBorder
-        inheritPadding
-        py="xs"
-        style={{
-          backgroundColor: noWorkingBg,
-          color: noWorkingColor,
-        }}
-      >
+      <Card.Section withBorder inheritPadding py="xs" style={cardDayStyle}>
         <input
           type="checkbox"
           id={`isWorkingDay${day.id}`}
@@ -68,19 +75,55 @@ const GridITem: React.FunctionComponent<GridItemProp> = ({
       </Card.Section>
       <Card.Section withBorder inheritPadding py="xs">
         <Flex direction={`column`}>
-          <NumberInput
-            value={day.WorkingHours ? day.WorkingHours : 0.0}
-            placeholder="Ore Lavorate"
-            min={0}
-            max={24}
-            step={0.05}
-            precision={1}
-            onChange={(val: number) => toggleWorkingHours(val)}
-            required
-          />
-          <Flex direction={`column`} align={`center`} m={2}>
-            <div>{day.isHoliday && <div>{`Festivo`}</div>}</div>
-          </Flex>
+          <Box mt={5} mb={5}>
+            <label>{`Malattia`} </label>
+            <input
+              type="checkbox"
+              id={`isSickDay${day.id}`}
+              name={`isSickDay${day.id}`}
+              value={`${day.isSickDay ? 'S' : 'N'}`}
+              checked={day.isSickDay}
+              onChange={(e) => toggleSickDay(e.target.checked)}
+            />
+          </Box>
+          <div>
+            <label>Ore lavorate: </label>
+            <Flex direction={`column`}>
+              <NumberInput
+                value={day.WorkingHours ? day.WorkingHours : 0.0}
+                placeholder="Ore Lavorate"
+                min={0}
+                max={24}
+                step={0.05}
+                precision={1}
+                onChange={(val: number) => toggleWorkingHours(val)}
+                disabled={day.isSickDay}
+                required
+              />
+              <Flex direction={`column`} align={`center`} m={2}>
+                <div>{day.isHoliday && <div>{`Festivo`}</div>}</div>
+              </Flex>
+            </Flex>
+          </div>
+          <div>
+            <label>Permessi: </label>
+            <Flex direction={`column`}>
+              <NumberInput
+                value={day.WorkingHours ? day.WorkingHours : 0.0}
+                placeholder="Ore Permesso"
+                min={0}
+                max={24}
+                step={0.05}
+                precision={1}
+                disabled={day.isSickDay}
+                onChange={(val: number) => toggleWorkingHours(val)}
+                required
+              />
+              <Flex direction={`column`} align={`center`} m={2}>
+                <div>{day.isHoliday && <div>{`Festivo`}</div>}</div>
+              </Flex>
+            </Flex>
+          </div>
         </Flex>
       </Card.Section>
     </Card>

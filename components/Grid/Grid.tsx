@@ -5,39 +5,28 @@ import {
   countWorkedDaysCounter,
   getWorkingDaysByAutocompilation,
 } from '../../utils/utils'
+import { Month } from '../TimeSheet'
 
-type TimeSheetStates = {
-  setAutoCompilation: (a: boolean) => void
-  setDays: (d: Day[]) => void
-  setWorkedDays: (n: number) => void
-  setWorkedHours: (n: number) => void
+type TimeSheet = {
+  month: Month
+  handleMonth: (a: Month) => void
 }
 
-export type Month = {
-  month: string
-  year: number
-  days: Day[]
-  TimeSheetStates: TimeSheetStates
-}
-
-const Grid: React.FunctionComponent<Month> = ({
-  month,
-  year,
-  days,
-  TimeSheetStates,
-}) => {
-  const { setAutoCompilation, setDays, setWorkedDays, setWorkedHours } =
-    TimeSheetStates
+const Grid: React.FunctionComponent<TimeSheet> = ({ month, handleMonth }) => {
+  const { days, idMonth, year } = month
 
   const handleAutoCompilation = (checkCompilation: boolean) => {
     const days = getWorkingDaysByAutocompilation(new Date(), checkCompilation)
 
     const counters = countWorkedDaysCounter(days)
 
-    setDays(days)
-    setAutoCompilation(checkCompilation)
-    setWorkedDays(counters.workedDays)
-    setWorkedHours(counters.workedHous)
+    handleMonth({
+      ...month,
+      days: days,
+      isAutocompilation: checkCompilation,
+      workedDays: counters.workedDays,
+      workedHous: counters.workedHous,
+    })
   }
 
   const setSingleDay = (day: Day) => {
@@ -48,16 +37,19 @@ const Grid: React.FunctionComponent<Month> = ({
       return item
     })
     const counters = countWorkedDaysCounter(newDays)
-    setDays(newDays)
-    setWorkedDays(counters.workedDays)
-    setWorkedHours(counters.workedHous)
+    handleMonth({
+      ...month,
+      days: newDays,
+      workedDays: counters.workedDays,
+      workedHous: counters.workedHous,
+    })
   }
 
   return (
     <Box>
       <Flex direction={`row`} justify={`space-between`} align={`center`}>
         <Title order={1} ta={`left`} tt={`capitalize`} mb={20}>
-          {month} {year}
+          {idMonth} {year}
         </Title>
         <Box>
           <input
@@ -89,6 +81,7 @@ const Grid: React.FunctionComponent<Month> = ({
               isWeekend: _.isWeekend,
               isWorked: _.isWorked,
               isHoliday: _.isHoliday,
+              isSickDay: _.isSickDay,
             }}
             handleDay={setSingleDay}
           />

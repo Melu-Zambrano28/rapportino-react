@@ -92,6 +92,7 @@ const getWorkingDaysByAutocompilation = (
       isWorked: false,
       isWeekend: isWeekEnd,
       isHoliday: isHoliday,
+      isSickDay: false,
     }
 
     if (!autoCompilation) {
