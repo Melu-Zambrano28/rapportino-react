@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Card, Flex, NumberInput, Title } from '@mantine/core'
+import { Badge, Box, Card, Flex, NumberInput, Title } from '@mantine/core'
 import {
   NO_WORKING_DAY_STYLE,
   mappCardStyle,
@@ -67,10 +67,14 @@ const GridITem: React.FunctionComponent<GridItemProp> = ({
           value={`${day.isWorked ? 'S' : 'N'}`}
           checked={day.isWorked}
           onChange={(e) => toggleWorkingDay(e.target.checked)}
+          disabled={day.isSickDay}
         />
 
         <Title size="h6" weight={500} tt="uppercase">
-          <label htmlFor={`isWorkingDay${day.id}`}>{`${dateFormat}`} </label>
+          <label htmlFor={`isWorkingDay${day.id}`}>
+            {`${dateFormat}`}{' '}
+            {day.isHoliday && <Badge color="teal" size="md">{`Festivo`}</Badge>}{' '}
+          </label>
         </Title>
       </Card.Section>
       <Card.Section withBorder inheritPadding py="xs">
@@ -84,6 +88,7 @@ const GridITem: React.FunctionComponent<GridItemProp> = ({
               value={`${day.isSickDay ? 'S' : 'N'}`}
               checked={day.isSickDay}
               onChange={(e) => toggleSickDay(e.target.checked)}
+              disabled={day.isHoliday || day.isWeekend}
             />
           </Box>
           <div>
@@ -119,9 +124,6 @@ const GridITem: React.FunctionComponent<GridItemProp> = ({
                 onChange={(val: number) => toggleWorkingHours(val)}
                 required
               />
-              <Flex direction={`column`} align={`center`} m={2}>
-                <div>{day.isHoliday && <div>{`Festivo`}</div>}</div>
-              </Flex>
             </Flex>
           </div>
         </Flex>

@@ -15,9 +15,23 @@ export const WORKING_DAY_STYE = {
   color: '#000',
 }
 
+export const SICK_DAY = {
+  backgroundColor: '#fcc419',
+  color: '#white',
+}
+
+const WORKED_DAY = {
+  backgroundColor: '#339af0',
+  color: '#white',
+}
+
 const mappCardStyle = (day: Day) => {
-  if (!(day.isWeekend || day.isHoliday)) {
+  if (!(day.isWorked || day.isWeekend || day.isHoliday || day.isSickDay)) {
     return {}
+  }
+
+  if (day.isWorked) {
+    return WORKED_DAY
   }
 
   if (day.isWeekend || day.isHoliday) {

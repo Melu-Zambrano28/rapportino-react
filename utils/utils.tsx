@@ -155,6 +155,16 @@ const countWorkedDaysCounter = (days: Day[]): Counters => {
   return counters
 }
 
+const countSickDays = (days: Day[]): number => {
+  const count = days.reduce(
+    (accumulator, currentValue) =>
+      currentValue.isSickDay ? accumulator + 1 : accumulator,
+    0,
+  )
+
+  return count
+}
+
 export {
   getAllDates,
   toCapitalize,
@@ -164,4 +174,5 @@ export {
   getEeaster,
   getHolidays,
   countWorkedDaysCounter,
+  countSickDays,
 }

@@ -1,5 +1,8 @@
 import { useState } from 'react'
-import { getWorkingDaysByAutocompilation } from '../../utils/utils'
+import {
+  countSickDays,
+  getWorkingDaysByAutocompilation,
+} from '../../utils/utils'
 import { Grid } from '../Grid/Grid'
 import { Day } from '../GridItem'
 import { Box, Divider, Flex, Title } from '@mantine/core'
@@ -36,24 +39,26 @@ const TimeSheet: React.FunctionComponent<{}> = () => {
     })
   }
 
-  return (
-    <Flex
-      direction={{ sm: 'column', md: 'row' }}
-      gap={{ base: 'sm', sm: 'lg' }}
-      justify={`center`}
-    >
-      <Grid month={month} handleMonth={handleSingleCell} />
-      <Divider orientation="vertical" />
+  const sickDays = countSickDays(month.days)
 
-      <Flex direction={{ base: 'column' }}>
-        <Title order={1} ta={`center`} tt={`capitalize`} mb={20}>
-          Totale
-        </Title>
-        <Box>
-          <p>Giorni Lavorati : {month.workedDays}</p>
-          <p>Ore Lavorate : {month.workedHous}</p>
-        </Box>
-      </Flex>
+  return (
+    <Flex direction={`row`} gap={5}>
+      <Box sx={{ maxWidth: `80%` }}>
+        <Grid month={month} handleMonth={handleSingleCell} />
+      </Box>
+      <Divider orientation="vertical" />
+      <Box sx={{ maxWidth: `20%` }}>
+        <Flex direction={{ base: 'column' }}>
+          <Title order={1} ta={`center`} tt={`capitalize`} mb={20}>
+            Totale
+          </Title>
+          <Box>
+            <p>Giorni Lavorati : {month.workedDays}</p>
+            <p>Ore Lavorate : {month.workedHous}</p>
+            <p>Malattia: {sickDays}</p>
+          </Box>
+        </Flex>
+      </Box>
     </Flex>
   )
 }
